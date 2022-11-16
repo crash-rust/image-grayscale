@@ -62,3 +62,36 @@
   nvm install npm版本
   ```
 
+### 包下载慢怎么办？
+
+- 由于某些神秘力量，crate（理解成rust当中的库就好，不需要理解成板条箱啥的，就是库lib）下载的很慢，我们需要想办法加速下载源。这里提供两种方法
+
+  - 设置国内替换源(`~/.cargo/config`)
+
+    rust关于cargo部分的配置文件跟所有类Unix系统的项目一样的，都是利用了`.XX`的名字形式放在用
+
+    ```shell
+    [source.crates-io]
+    registry = "https://github.com/rust-lang/crates.io-index"
+    replace-with = 'tuna'
+    [source.ustc]
+    registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+    [source.tuna]
+    registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+    ```
+
+  - 设置shell终端代理(跨墙软件需要自行购买准备)
+
+    ```shell
+    # 配置shell命令行代理别名
+    ## shell-http代理
+    alias open-shell-proxy='export http_proxy=http://127.0.0.1:7890'
+    alias close-shell-proxy='unset http_proxy'
+    ## shell-https代理
+    alias open-shell-sslproxy='export https_proxy=http://127.0.0.1:7890'
+    alias close-shell-sslproxy='unset https_proxy'
+    ```
+
+    
+
+  
