@@ -5,6 +5,7 @@ import { grayscale } from '../pkg';
 const App: React.FC = () => {
   const [source, setSource] = useState<string>('');
   const [graysource, setGraysource] = useState<string>('');
+  const [time, setTime] = useState<number>(0);
 
   function handleFileChange(e) {
     const fileReader = new FileReader();
@@ -25,6 +26,7 @@ const App: React.FC = () => {
       let end = new Date().getTime();
 
       setGraysource(graySource);
+      setTime(end - start);
       console.log('灰度耗时 =>', end - start);
     }
   }, [source]);
@@ -50,10 +52,15 @@ const App: React.FC = () => {
           </label>
 
           {graysource && (
-            <div className='img-container'>
-              <img id='old-img' src={source} />
-              <img id='new-img' src={graysource} />
-            </div>
+            <>
+              <div className='text-3xl mb-8'>
+                图片灰度总耗时：{time + '毫秒'}
+              </div>
+              <div className='img-container'>
+                <img id='old-img' src={source} />
+                <img id='new-img' src={graysource} />
+              </div>
+            </>
           )}
         </div>
       </div>
