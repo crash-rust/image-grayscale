@@ -1,25 +1,26 @@
-use base64::decode;
+use base64::{decode, encode};
 use image::{load_from_memory, ImageOutputFormat::Png};
 use wasm_bindgen::prelude::*;
 use web_sys::console::log_1 as log;
 
 #[wasm_bindgen]
-pub fn say(source: &str) {
-    let source = decode(source).unwrap();
+pub fn grayscale(encoded_file: &str) -> String {
+    // 获取source64,转换成二进制文件
+    // log(&source.into());
 
-    log(&"decode image finish".into());
+    let base64_to_vector = decode(encoded_file).unwrap();
+    log(&"decoded".into());
+    // 将二进制文件从内存中读取变成一个动态图像
+    let img = load_from_memory(&base64_to_vector).unwrap();
 
-    let img = load_from_memory(&source).unwrap();
+    //
+    let img = img.grayscale();
 
-    log(&"load image to memory finish".into());
+    let mut buffer = vec![];
 
-    img.grayscale();
+    img.write_to(&mut buffer, Png).unwrap();
 
-    // let mut buffer = vec![];
+    let data_url = format!("data:image/png;base64,{}", encode(buffer));
 
-    // img.write_to(&mut buffer, Png).unwrap();
-
-    // log(&"gray scale image  finish".into());
+    data_url
 }
-
-// 需要对前端传过来的source字符串切片进行转换处理
